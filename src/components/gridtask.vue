@@ -1,20 +1,23 @@
 <template>
   <div>
     <ul class="tasks-list">
-      <li  v-for="(task,index) in tasks" :key="task+index">
-        <button @click="changestatus(task.id)" :class="{greenLine : task.color}" >
+      <li v-for="task in tasks" :key="task.id">
+        <button
+          @click="changestatus(task.id)"
+          :class="{ greenLine: task.complete }"
+        >
           {{ task.subject }}
-          {{ task.status }}
+          {{ task.complete }}
         </button>
         <button @click="deleteTask(task.id)" class="delete">
-          <i  class="fa fa-times" aria-hidden="true"></i>
+          <i class="fa fa-times" aria-hidden="true"></i>
         </button>
       </li>
     </ul>
-    <p class="counter">تعداد تسک های تکمیل شده :
-      <span> {{ counter }} </span>
+    <p class="counter">
+      تعداد تسک های تکمیل شده :
+      <span> {{ completedNum }} </span>
     </p>
-    
   </div>
 </template>
 
@@ -22,37 +25,33 @@
 export default {
   data() {
     return {
-      counter : 0
-    }
+      counter: 0,
+    };
   },
-  props : {
-    tasks : Array
+  props: {
+    tasks: Array,
   },
-  methods : {
+  computed: {
+    completedNum() {
+      const a = this.tasks.filter((i) => {
+        return i.complete == true;
+      });
+      return a.length;
+    },
+  },
+  methods: {
     changestatus(id) {
-      console.log(this.tasks);
-      let result = this.tasks.find(arry => arry.id === id);
-      console.log(result); 
-      result.status = "complete";
-      result.color = !result.color;
-      if(result.status === "complete" && result.color === true) {
-        this.counter = this.counter + 1
-      }
+      this.$emit("changemyStatusParent", id);
     },
     deleteTask(id) {
-       let result1 = this.tasks.find(arry => arry.id === id);
-      this.tasks.splice(id , 1);
-      console.log(id);
-      if (this.counter > 0 || (result1.status === 'complete')) {
-        this.counter = this.counter -1;
-      }
-    }
-  }
-}
+      this.$emit("deleteMeParent", id);
+    },
+  },
+};
 </script>
 
 <style scoped>
-.tasks-list li:first-child{
+.tasks-list li:first-child {
   display: none;
 }
 .tasks-list {
@@ -81,6 +80,6 @@ export default {
   text-align: center;
 }
 .counter span {
-  color : red
+  color: red;
 }
 </style>
