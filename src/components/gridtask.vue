@@ -30,7 +30,7 @@ export default {
   },
   methods : {
     changestatus(id) {
-      // console.log(id);
+      console.log(this.tasks);
       let result = this.tasks.find(arry => arry.id === id);
       console.log(result); 
       result.status = "complete";
@@ -39,10 +39,11 @@ export default {
         this.counter = this.counter + 1
       }
     },
-    deleteTask(key) {
-      this.tasks.splice(key , 1);
-      console.log(key);
-      if (this.counter > 0) {
+    deleteTask(id) {
+       let result1 = this.tasks.find(arry => arry.id === id);
+      this.tasks.splice(id , 1);
+      console.log(id);
+      if (this.counter > 0 || (result1.status === 'complete')) {
         this.counter = this.counter -1;
       }
     }
