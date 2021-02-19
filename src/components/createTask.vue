@@ -1,44 +1,45 @@
 <template>
   <div class="form-request">
-    <input type="text" placeholder="عنوان تسک را وارد نمایید" v-model="titleTask"  v-on:keyup.enter="createTask">
-    <button @click.prevent="createTask()">
+    <input
+      type="text"
+      placeholder="عنوان تسک را وارد نمایید"
+      v-model="titleTask"
+      @keyup.enter="createTask()"
+    />
+    <button @click="createTask()" type="submit">
       <span>
         ثبت درخواست
       </span>
     </button>
     <p class="error">
-      {{error}}
+      {{ error }}
     </p>
   </div>
 </template>
 
 <script>
-import { v4 as uuidv4 } from 'uuid';
 export default {
   data() {
     return {
-      titleTask : '',
-      error : ''
-    }
+      titleTask: "",
+      error: "",
+    };
   },
-  components : {
-
-  },
-  methods : {
+  components: {},
+  methods: {
     createTask() {
-      if (this.titleTask == '') {
-        this.error ="لطفا عنوان تسک را وارد نمایید"
+      if (this.titleTask == "" && this.titleTask < 3) {
+        this.error = "لطفا عنوان تسک را وارد نمایید";
       } else {
-        this.error ="";
-        this.$emit('mackingTask' , this.titleTask , uuidv4());
-        this.titleTask = '';
+        this.error = "";
+
+        this.$emit("mackingTask", this.titleTask);
+        this.titleTask = "";
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
-
-
 
 <style scoped>
 input {
@@ -50,7 +51,7 @@ input {
 }
 .form-request {
   text-align: center;
-} 
+}
 button {
   border: 1px solid #ccc;
   padding: 12px 8px;
